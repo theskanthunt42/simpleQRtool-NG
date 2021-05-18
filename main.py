@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import ui
+import libs
 #Qt stuff goes here
 from PyQt5 import uic, QtWidgets
 from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QAction, QFileDialog, QRadioButton, QButtonGroup
@@ -55,5 +56,98 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.encoding_utf8.toggled.connect(self.EncodingModeUnicode)
         self.encoding_ascii.toggled.connect(self.EncodingModeASCII)
         self.encoding_shift.toggled.connect(self.EncodingModeJIS)
+        self.main_exec.clicked.connect(self.ConvertTrigger)
+        self.import_exec.clicked.connect(self.ImportTrigger)
+        self.export_exec.clicked.connect(self.ExportTrigger)
+        self.export_exec_2.triggered.connect(self.ExportTrigger)
+        self.size_auto_button.toggled.connect(self.SizeModeAuto)
+        self.size_manual_button.toggled.connect(self.SizeModeManual)
+        self.size_slider.valueChanged.connect(self.SliderChangedHandler)
         self.action_exit.trigger.connect(self.exit)
-        
+
+#Use to handle mode switch
+
+    def InfoOutput(self, logs, terminal, stat_bar, stat_bar_time):
+        self.all_logs = self.all_logs + str(logs) +'\n'
+        if terminal == True:
+            print(logs)
+        else:
+            pass
+        if stat_bar == True and stat_bar_time != None or 0:
+            self.statusBar.showMessage(logs, stat_bar_time)
+        else:
+            pass
+    
+#Exit handler
+
+    def exit(self):
+        self.InfoOutput(logs='Exit triggered.', terminal=True,
+                        stat_bar=False, stat_bar_time=0)
+        with open(f'{self.current_path}{self.os_seprator}logs.txt', 'w') as f:
+            f.write(self.all_logs)
+        raise SystemExit
+
+
+    def mode_q2t(self):
+        #Disable all widgets that wont need
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.current_mode = 'q2t'
+            self.export_exec.setEnabled(False)
+            self.main_exec.setEnabled(False)
+            self.import_exec.setEnabled(False)
+            self.encoding_utf8.setEnabled(False)
+            self.encoding_ascii.setEnabled(False)
+            self.encoding_shift.setEnabled(False)
+            self.size_auto_button.setEnabled(False)
+            self.size_manual_button.setEnabled(False)
+            self.size_slider.setEnabled(False)
+        return None
+    
+#Same as up
+
+    def mode_t2q(self):
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.current_mode = 't2q'
+            self.main_exec.setEnabled(True)
+            self.import_exec.setEnabled(False)
+            self.export_exec(True)
+            self.encoding_shift.setEnabled(True)
+            self.encoding_utf8.setEnabled(True)
+            self.encoding_ascii.setEnabled(True)
+            self.size_auto_button.setEnabled(True)
+            self.size_manual_button.setEnabled(True)
+            self.size_slider.setEnabled(True)
+        return None
+
+    def EncodingModeUnicode(self):
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.text_encoding = 'utf-8'
+        return None
+    
+    def EncodingModeASCII(self):
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.text_encoding = 'ascii'
+        return None
+
+    def EncodingModeJIS(self):
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.text_encoding = 'shift-jis'
+        return None
+
+#Using QFileDialog to import PNGs
+
+    def ImportTrigger(self):
+        self.FileDialog = QFileDialog.getOpenFileName(
+            self, 'Open file', self.current_path, 'PNG files (*.png)')
+        self.full_path = self.FileDialog[0]
+        self.file_imported_stats = True
+        self.InfoOutput(f'Selected file: {self.full_path}',
+                        terminal=True, stat_bar=True, stat_bar_time=1500
+        )
+        self.MainDecoder(self.full_path)
+        return None
