@@ -151,3 +151,25 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         )
         self.MainDecoder(self.full_path)
         return None
+
+    def SliderChangedHandler(self, value):
+        self.image_size = value
+        self.InfoOutput(
+            logs=f'Size changed to {self.image_size}', terminal=True, stat_bar=True, stat_bar_time=1500)
+        return None
+    
+    def SizeAutoMode(self):
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.auto_mode_stats = True
+            self.size_slider.setEnabled(True)
+        return None
+    
+    def SizeModeManual(self):
+        radio_button = self.sender()
+        if radio_button.isChecked():
+            self.auto_mode_stats = False
+            self.size_slider.setEnabled(True)
+        return None
+
+
