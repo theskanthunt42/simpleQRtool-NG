@@ -1,10 +1,12 @@
 #Main stuff goes here
 #Importing some stuff that will be use in here
+from _typeshed import NoneType
+from ctypes import util
 import os
 import sys
 import json
 import ui
-import libs
+import libs.utils
 #Qt stuff goes here
 from PyQt5 import uic, QtWidgets
 from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QAction, QFileDialog, QRadioButton, QButtonGroup
@@ -172,4 +174,17 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             self.size_slider.setEnabled(True)
         return None
 
+    def MainDecoder(self, file_path):
+        if self.file_imported_stats:
+            self.pixmap_label.setPixmap(QPixmap(file_path))
+            data = libs.utils.Decoder(file_path)
+            if type(data) != NoneType:
+                self.text_box.setText(data)
+            else:
+                self.InfoOutput("Can't decode QR Code!", True, True, 1500)
+        else:
+            self.InfoOutput('Please import QR Code first!', True, True, 2000)
+        return None
+
+    def MainEncoder(self)
 
