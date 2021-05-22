@@ -186,5 +186,14 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             self.InfoOutput('Please import QR Code first!', True, True, 2000)
         return None
 
-    def MainEncoder(self)
+    def MainEncoder(self):
+        print('Place holder.')
 
+
+    def ConvertTrigger(self):
+        self.text_in_box = self.text_box.toPlainText()
+        if self.text_in_box != '' or None:
+            self.MainEncoder(self.text_in_box)
+        else:
+            self.InfoOutput('Please at least fill some text to the box.', True, True, 2000)
+        return None
