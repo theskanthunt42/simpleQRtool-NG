@@ -1,9 +1,11 @@
 #All the stuff behind
 import pyzbar.pyzbar as QR
 from PIL import Image
+import qrcode
+import tempfile
 
 #Plan to use a json loader here, But ended up cancel
-
+#7.June update: Done as Config_Loader
 def Decoder(file_path):
     try:
         return_string = QR.decode(Image.open(file_path))
@@ -13,8 +15,18 @@ def Decoder(file_path):
         #raise SystemError
         return None
 
-def Encoder():
-    print('Placeholder')
+def Encoder(conf, image_size, text, encoding):
+    #print('Placeholder')
+    qr_object = qrcode.QRCode(
+        version=image_size, error_correction=conf['error_correction'], box_size=conf['box_size'], border=conf['border']
+        )
+    qr_object.add_data(text.encode(encoding))
+    qr_object.make(fit=True)
+    image_object = qr_object.make_image(fill_color=conf['color'], back_color=conf['background_color'])
+    saved_filename = tempfile.mktemp('.png')
+    open(saved_filename, 'wb').close()
+    image_object.save(saved_filename)
+    return saved_filename
 
 def Config_Loader(config_path):
     try:

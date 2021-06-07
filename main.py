@@ -201,7 +201,7 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
     else:
         size = self.size_slider.value()
     try:
-        self.saved_file_name = libs.utils.Encoder(loaded_config)
+        self.saved_file_name = libs.utils.Encoder(loaded_config, size, text, self.text_encoding)
         self.pixmap_label.setPixmap(QPixmap(self.saved_file_name))
         self.generated_stats = True
     except SystemError:
