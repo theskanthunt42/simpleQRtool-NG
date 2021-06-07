@@ -15,3 +15,13 @@ def Decoder(file_path):
 
 def Encoder():
     print('Placeholder')
+
+def Config_Loader(config_path):
+    try:
+        with open(config_path) as f:
+            loaded_json = json.load(f)
+            return loaded_json
+    except SystemError:
+        return None
+
+
