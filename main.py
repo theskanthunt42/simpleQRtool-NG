@@ -216,3 +216,13 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         return None
 
 
+def main():
+    app = QApplication(sys.argv)
+    form = SimpleQRTool()
+    form.show()
+    app.exec_()
+
+if __name__ == '__main__':
+    main()
+
+
