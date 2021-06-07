@@ -186,9 +186,26 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             self.InfoOutput('Please import QR Code first!', True, True, 2000)
         return None
 
-    def MainEncoder(self):
-        print('Place holder.')
-
+    def MainEncoder(self, text):
+        #print('Place holder.')
+        size = None
+        #JSON stuff goes here
+        loaded_config = libs.utils.Config_Loader('config.json')
+        if loaded_config != NoneType:
+            pass
+        else:
+            self.InfoOutput("Can't load the config.json as a config file!", True, True, 2000)
+        raise SystemError
+    if self.auto_mode_stats != True:
+        size = None
+    else:
+        size = self.size_slider.value()
+    try:
+        self.saved_file_name = libs.utils.Encoder(loaded_config)
+        self.pixmap_label.setPixmap(QPixmap(self.saved_file_name))
+        self.generated_stats = True
+    except SystemError:
+        self.InfoOutput("Error when generating QR Code.", True, True, 2000)
 
     def ConvertTrigger(self):
         self.text_in_box = self.text_box.toPlainText()
@@ -197,3 +214,5 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         else:
             self.InfoOutput('Please at least fill some text to the box.', True, True, 2000)
         return None
+
+
