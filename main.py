@@ -215,6 +215,29 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             self.InfoOutput('Please at least fill some text to the box.', True, True, 2000)
         return None
 
+    def ExportTrigger(self):
+        if self.generated_stats and self.saved_file_name != '' or None:
+            self.FileDialog = QFileDialog.getSaveFileName(
+                self, 'Save file', self.current_path, 'PNG files (*.png)'
+                    )
+            filepath = self.FileDialog[0]
+            if self.current_platform == 'linux' or 'linux2' or 'darwin' or 'freebsd' or 'openbsd' or 'macos':
+                try:
+                    os.system(f'cp {self.saved_file_name} {filepath}')
+                    self.InfoOutput(f'PNG exported to {filepath}', True, True, 1500)
+                except SystemError:
+                    self.InfoOutput(f"Can't export due to couldn't copy the PNG to the desire path.", True, True, 2000)
+            elif self.current_platform == 'win32' or 'win64' or 'cygwin' or 'msys':
+                try:
+                    os.system(f'copy {self.saved_file_name} {filepath}')
+                    self.InfoOutput(f'PNG exported to {filepath}', True, True, 1500)
+                except SystemError:
+                    self.InfoOutput("Can't export due to couldn't copy the PNG to the desire path.", True, True, 2000)
+            else:
+                self.InfoOutput("Can't copy file.", True, True, 1000)
+        else:
+            self.InfoOutput("Please generate the QR code first", True, True, 1500)
+    return None
 
 def main():
     app = QApplication(sys.argv)
