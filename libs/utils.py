@@ -36,4 +36,20 @@ def Config_Loader(config_path):
     except SystemError:
         return None
 
+def Copy(original, desire, platform):
+    if platform == 'linux' or 'linux2' or 'darwin' or 'freebsd' or 'openbsd' or 'macos':
+        try:
+            os.system(f'cp {original} {desire}')
+            outputs = f'PNG exported to {desire}'
+        except SystemError:
+            outputs = f"Can't export due to couldn't copy the PNG to the desire path."
+    elif platform == 'win32' or 'win64' or 'cygwin' or 'msys':
+        try:
+            os.system(f'copy {original} {desire}')
+                    outputs = f'PNG exported to {filepath}'
+        except SystemError:
+            outputs = "Can't export due to couldn't copy the PNG to the desire path."
+    else:
+        outputs = "Can't copy file."
+    return outputs
 
