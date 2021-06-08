@@ -224,7 +224,7 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             message_outputs = libs.utils.Copy(self.saved_file_name, filepath, self.current_platform)
         else:
             self.InfoOutput("Please generate the QR code first", True, True, 1500)
-    return None
+        return None
 
 def main():
     app = QApplication(sys.argv)
