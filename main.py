@@ -195,7 +195,7 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             pass
         else:
             self.InfoOutput("Can't load the config.json as a config file!", True, True, 2000)
-        raise SystemError
+            raise SystemError
     if self.auto_mode_stats != True:
         size = None
     else:

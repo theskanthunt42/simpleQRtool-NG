@@ -46,7 +46,7 @@ def Copy(original, desire, platform):
     elif platform == 'win32' or 'win64' or 'cygwin' or 'msys':
         try:
             os.system(f'copy {original} {desire}')
-                    outputs = f'PNG exported to {filepath}'
+            outputs = f'PNG exported to {filepath}'
         except SystemError:
             outputs = "Can't export due to couldn't copy the PNG to the desire path."
     else:
