@@ -3,6 +3,8 @@ import pyzbar.pyzbar as QR
 from PIL import Image
 import qrcode
 import tempfile
+import json
+import os
 
 #Plan to use a json loader here, But ended up cancel
 #7.June update: Done as Config_Loader
@@ -46,7 +48,7 @@ def Copy(original, desire, platform):
     elif platform == 'win32' or 'win64' or 'cygwin' or 'msys':
         try:
             os.system(f'copy {original} {desire}')
-            outputs = f'PNG exported to {filepath}'
+            outputs = f'PNG exported to {desire}'
         except SystemError:
             outputs = "Can't export due to couldn't copy the PNG to the desire path."
     else:
