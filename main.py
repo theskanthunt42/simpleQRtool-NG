@@ -75,7 +75,7 @@ class SimpleQRTool(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         else:
             pass
         if stat_bar == True and stat_bar_time != None or 0:
-            self.statusBar.showMessage(logs, stat_bar_time)
+            self.statusbar.showMessage(logs, stat_bar_time)
         else:
             pass
 
